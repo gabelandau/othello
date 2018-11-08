@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store(Request $request)
     {
         $user = $request->user();
@@ -32,6 +42,7 @@ class MessageController extends Controller
     public function getPrevious()
     {
         $messages = DB::table('messages')
+            ->orderBy('created_at', 'desc')
             ->join('users', 'users.id', '=', 'messages.sender')
             ->select('messages.body', 'messages.created_at', 'users.username')
             ->take(10)

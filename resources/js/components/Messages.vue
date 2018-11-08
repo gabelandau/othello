@@ -15,20 +15,22 @@ export default {
     }
   },
   created () {
-    this.messages.push({
-      'created_at': '',
-      'username': 'System',
-      'body': 'You are now in the global chat, say hi!'
-    })
-
     axios.get('/messages').then(response => {
       response.data.forEach(message => {
         message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
         this.messages.push(message)
       })
+
+      this.messages.push({
+        'created_at': '',
+        'username': 'System',
+        'body': 'You are now in the global chat, say hi!'
+      })
+
+      this.messages.reverse()
     })
 
-    window.Echo.channel('messages').listen('MessageSent', ({message}) => {
+    window.Echo.channel('messages').listen('MessageSent', ({ message }) => {
       message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
       this.messages.push(message)
     })

@@ -54290,17 +54290,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
-    this.messages.push({
-      'created_at': '',
-      'username': 'System',
-      'body': 'You are now in the global chat, say hi!'
-    });
-
     axios.get('/messages').then(function (response) {
       response.data.forEach(function (message) {
         message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA');
         _this.messages.push(message);
       });
+
+      _this.messages.push({
+        'created_at': '',
+        'username': 'System',
+        'body': 'You are now in the global chat, say hi!'
+      });
+
+      _this.messages.reverse();
     });
 
     window.Echo.channel('messages').listen('MessageSent', function (_ref) {
