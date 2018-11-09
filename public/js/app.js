@@ -54306,7 +54306,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.messages.reverse();
     });
 
-    window.Echo.join('messages.0').listen('MessageSent', function (_ref) {
+    window.Echo.join('messages.1').listen('MessageSent', function (_ref) {
       var message = _ref.message;
 
       message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA');
@@ -71058,7 +71058,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
-    window.Echo.join('messages.0').here(function (users) {
+    window.Echo.join('messages.1').here(function (users) {
       _this.users = users;
     }).joining(function (user) {
       _this.users.push(user);

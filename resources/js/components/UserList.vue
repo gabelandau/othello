@@ -14,7 +14,7 @@ export default {
     }
   },
   created () {
-    window.Echo.join('messages.0')
+    window.Echo.join('messages.1')
       .here(users => {
         this.users = users
       })

@@ -27,7 +27,7 @@ class MessageController extends Controller
 
         Message::create([
             'body'     => $request->input('body'),
-            'room'     => 0,
+            'room'     => 1,
             'sender'   => $user->id
         ]);
 

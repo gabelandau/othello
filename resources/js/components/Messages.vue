@@ -30,7 +30,7 @@ export default {
       this.messages.reverse()
     })
 
-    window.Echo.join('messages.0')
+    window.Echo.join('messages.1')
       .listen('MessageSent', ({ message }) => {
         message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
         this.messages.push(message)
