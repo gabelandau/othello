@@ -36,7 +36,7 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         @guest
-                            <a class="button is-primary" href="{{ route('register') }}"><strong>Sign up</strong></a>
+                            <a class="button is-link" href="{{ route('register') }}"><strong>Sign up</strong></a>
                             <a class="button is-light" href="{{ route('login') }}">Log in</a>
                         @else
                             <a class="button is-light" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" {{ __('Logout') }}>Log out</a>

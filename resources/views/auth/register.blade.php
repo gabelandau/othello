@@ -8,7 +8,7 @@
         <div class="field">
             <label class="label">Username</label>
             <div class="control">
-                <input name="username" class="input" type="text" placeholder="username">
+                <input name="username" class="input" type="text" placeholder="Username">
             </div>
             @if ($errors->has('username'))
                 <p class="help is-danger">{{ $errors->first('username') }}</p>
@@ -18,7 +18,7 @@
         <div class="field">
             <label class="label">Name</label>
             <div class="control">
-                <input name="name" class="input" type="text" placeholder="name">
+                <input name="name" class="input" type="text" placeholder="Name">
             </div>
             @if ($errors->has('name'))
                 <p class="help is-danger">{{ $errors->first('name') }}</p>
