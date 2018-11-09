@@ -27,13 +27,14 @@ class MessageController extends Controller
 
         Message::create([
             'body'     => $request->input('body'),
+            'room'     => 0,
             'sender'   => $user->id
         ]);
 
         $message = DB::table('messages')
             ->orderBy('created_at', 'desc')
             ->join('users', 'users.id', '=', 'messages.sender')
-            ->select('messages.body', 'messages.created_at', 'users.username')
+            ->select('messages.body', 'messages.created_at', 'users.username', 'messages.room')
             ->first();
 
         event(new MessageSent($message));

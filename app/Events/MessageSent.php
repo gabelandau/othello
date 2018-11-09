@@ -32,6 +32,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('messages');
+        return new PresenceChannel('messages.' . $this->message->room);
     }
 }

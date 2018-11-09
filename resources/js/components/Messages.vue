@@ -30,9 +30,10 @@ export default {
       this.messages.reverse()
     })
 
-    window.Echo.channel('messages').listen('MessageSent', ({ message }) => {
-      message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
-      this.messages.push(message)
+    window.Echo.join('messages.0')
+      .listen('MessageSent', ({ message }) => {
+        message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
+        this.messages.push(message)
     })
   }
 }

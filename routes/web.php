@@ -1,7 +1,6 @@
 <?php
 
-use App\Message;
-use App\Events\MessageSent;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +13,16 @@ use App\Events\MessageSent;
 |
 */
 
+Route::get('test', function () {
+    //
+});
+
 // Event Routes
-Route::post('/messages', 'MessageController@store');
-Route::get('/messages', 'MessageController@getPrevious');
+Route::post('messages', 'MessageController@store');
+Route::get('messages', 'MessageController@getPrevious');
 
 // Browser Routes
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('', 'HomeController@index')->name('home');
 
 // Authentication Routes
 Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);

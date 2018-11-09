@@ -7,7 +7,7 @@
             <messages></messages>
             <message-field></message-field>
         </div>
-        <div class="column"><p>hi</p></div>
+        <div class="column"><user-list></user-list></div>
     </div>
 </div>
 @endsection
