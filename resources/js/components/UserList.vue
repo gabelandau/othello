@@ -20,17 +20,13 @@ export default {
     }
   },
   created () {
-    window.Echo.join('messages.1')
-      .here(users => {
-        console.log(users)
-        this.users = users
-      })
-      .joining(user => {
-        this.users.push(user)
-      })
-      .leaving(user => {
-        this.users.splice(this.users.indexOf(user), 1)
-      })
+    window.Echo.join('messages.1').here(users => {
+      this.users = users
+    }).joining(user => {
+      this.users.push(user)
+    }).leaving(user => {
+      this.users.splice(this.users.indexOf(user), 1)
+    })
   }
 }
 </script>
