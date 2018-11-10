@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  props: ['room'],
   data () {
     return {
       message: ''
@@ -18,7 +19,11 @@ export default {
   },
   methods: {
     sendMessage () {
-      axios.post('/messages', { body: this.message })
+      window.axios.post('/messages', {
+        body: this.message,
+        room: this.room
+      })
+
       this.message = ''
     }
   }

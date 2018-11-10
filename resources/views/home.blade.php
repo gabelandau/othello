@@ -4,10 +4,10 @@
 <div>
     <div class="columns">
         <div class="column sidebar is-one-quarter">
-            <messages></messages>
-            <message-field></message-field>
+            <messages room="{{ $room }}"></messages>
+            <message-field room="{{ $room }}"></message-field>
         </div>
-        <div class="column"><user-list></user-list></div>
+        <div class="column"><lobby room="{{ $room }}" user="{{ Auth::user()->id }}"></lobby></div>
     </div>
 </div>
 @endsection

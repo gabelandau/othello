@@ -14,3 +14,7 @@
 Broadcast::channel('messages.{room}', function ($user, $room) {
     return $user;
 });
+
+Broadcast::channel('invites.{room}', function ($user, $room) {
+    return $user;
+});

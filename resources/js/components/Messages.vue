@@ -9,15 +9,16 @@
 
 <script>
 export default {
+  props: ['room'],
   data () {
     return {
-      messages: [],
+      messages: []
     }
   },
   created () {
-    axios.get('/messages').then(response => {
+    window.axios.get('/messages').then(response => {
       response.data.forEach(message => {
-        message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
+        message.created_at = window.moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
         this.messages.push(message)
       })
 
@@ -30,8 +31,8 @@ export default {
       this.messages.reverse()
     })
 
-    window.Echo.join('messages.1').listen('MessageSent', ({ message }) => {
-      message.created_at = moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
+    window.Echo.join(`messages.${this.room}`).listen('MessageSent', ({ message }) => {
+      message.created_at = window.moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
       this.messages.push(message)
     })
   }
@@ -52,4 +53,3 @@ export default {
   font-size: 8pt;
 }
 </style>
-

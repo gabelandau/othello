@@ -24,10 +24,11 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
+        $room = $request->input('room');
 
         Message::create([
             'body'     => $request->input('body'),
-            'room'     => 1,
+            'room'     => $room,
             'sender'   => $user->id
         ]);
 
