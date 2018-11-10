@@ -34,7 +34,7 @@ class InviteController extends Controller
         $invite = DB::table('invites')
             ->orderBy('invites.created_at', 'desc')
             ->join('users', 'users.id', '=', 'invites.initiator')
-            ->select('invites.id', 'users.username', 'invites.player')
+            ->select('invites.id', 'users.username', 'invites.player', 'invites.created_at')
             ->first();
 
         event(new InviteSent($invite));
@@ -46,7 +46,7 @@ class InviteController extends Controller
             ->where('invites.player', '=', $request->user()->id)
             ->orderBy('invites.created_at', 'desc')
             ->join('users', 'users.id', '=', 'invites.initiator')
-            ->select('invites.id', 'users.username', 'invites.player')
+            ->select('invites.id', 'users.username', 'invites.player', 'invites.created_at')
             ->get();
 
         return $messages;

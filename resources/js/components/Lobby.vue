@@ -15,7 +15,12 @@
         <div class="column">
           <nav class="panel invites-list">
             <p class="panel-heading">Pending Invites</p>
-            <a v-for="invite in invites" class="panel-block" :key="invite.id">Invite from: {{ invite.username }}</a>
+            <div v-for="invite in invites" class="panel-block" :key="invite.id">
+              <div class="columns">
+                <div class="column">From: {{ invite.username }}</div>
+                <div class="column">{{ invite.created_at }}</div>
+              </div>
+            </div>
           </nav>
         </div>
       </div>
@@ -70,6 +75,7 @@ export default {
   mounted () {
     window.axios.get('/invites').then(response => {
       response.data.forEach(invite => {
+        invite.created_at = window.moment(invite.created_at).format('MM/DD/YY @ h:mm:ssA')
         this.invites.push(invite)
       })
     })
@@ -83,7 +89,8 @@ export default {
     })
 
     window.Echo.join(`invites.${this.userid}`).listen('InviteSent', ({ invite }) => {
-      this.invites.push(invite)
+      invite.created_at = window.moment(invite.created_at).format('MM/DD/YY @ h:mm:ssA')
+      this.invites.unshift(invite)
     })
   }
 }
@@ -119,5 +126,11 @@ h3 {
 .current-user {
   background-color: #f5f5f5;
   cursor: not-allowed;
+}
+
+.panel-block {
+  .columns {
+    width: 100%;
+  }
 }
 </style>
