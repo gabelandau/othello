@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="container">
+      <div class="notification" v-bind:class="{ 'is-success': inviteResponse.status === 200 }" v-if="inviteResponse.show">
+        <button class="delete" @click="inviteResponse.show = false"></button>
+        {{ inviteResponse.text }}
+      </div>
+
       <div class="user-list-text">
         <h3 class="title is-3">Welcome!</h3>
         <p>Welcome to online Othello. Click a player below to challenge them to a game! Or, click any of your pending invites to accept it and start playing!</p>
@@ -18,7 +23,7 @@
             <div v-for="invite in invites" class="panel-block" :key="invite.id">
               <div class="columns">
                 <div class="column">From: {{ invite.username }}</div>
-                <div class="column">{{ invite.created_at }}</div>
+                <div class="column invite-datetime">{{ invite.created_at }}</div>
               </div>
             </div>
           </nav>
@@ -56,7 +61,11 @@ export default {
       selectedUser: {
         username: null
       },
-      showUserModal: false
+      showUserModal: false,
+      inviteResponse: {
+        show: false,
+        response: 0
+      }
     }
   },
   methods: {
@@ -69,6 +78,17 @@ export default {
     sendInvite () {
       window.axios.post('/invites', {
         player: this.selectedUser.id
+      }).then(res => {
+        if (res.status === 200) {
+          this.inviteResponse.text = res.data
+          this.showUserModal = false
+          this.inviteResponse.show = true
+          this.inviteResponse.status = res.status
+
+          setTimeout(() => {
+            this.inviteResponse.show = false
+          }, 3000)
+        }
       })
     }
   },
@@ -132,5 +152,16 @@ h3 {
   .columns {
     width: 100%;
   }
+}
+
+.invite-datetime {
+  text-align: right;
+}
+
+.notification {
+  position: absolute;
+  z-index: 100;
+  margin: 10px;
+  width: 100%;
 }
 </style>

@@ -38,6 +38,7 @@ class InviteController extends Controller
             ->first();
 
         event(new InviteSent($invite));
+        return response('Your invite has been sent!', 200);
     }
 
     public function getPrevious(Request $request)
