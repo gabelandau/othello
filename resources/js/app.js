@@ -19,7 +19,7 @@ window.Vue = require('vue');
 
 Vue.component('message-field', require('./components/MessageField.vue'));
 Vue.component('messages', require('./components/Messages.vue'));
-Vue.component('user-list', require('./components/UserList.vue'));
+Vue.component('lobby', require('./components/Lobby.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 
