@@ -9,7 +9,7 @@
         <div class="column">
           <nav class="panel users-list">
             <p class="panel-heading">Active Users</p>
-            <a v-for="user in users" class="panel-block" :key="user.id" @click="userClicked(user)">{{ user.username }}</a>
+            <a v-for="user in users" class="panel-block" v-bind:class="{ 'current-user': user.id == userid }" :key="user.id" @click="userClicked(user)">{{ user.username }}{{ user.id == userid ? ' (you)' : ''}}</a>
           </nav>
         </div>
         <div class="column">
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  props: ['room', 'user'],
+  props: ['room', 'userid'],
   name: 'Lobby',
   data () {
     return {
@@ -56,8 +56,10 @@ export default {
   },
   methods: {
     userClicked (user) {
-      this.selectedUser = user
-      this.showUserModal = true
+      if (!(user.id == this.userid)) { // eslint-disable-line
+        this.selectedUser = user
+        this.showUserModal = true
+      }
     },
     sendInvite () {
       window.axios.post('/invites', {
@@ -65,7 +67,7 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     window.axios.get('/invites').then(response => {
       response.data.forEach(invite => {
         this.invites.push(invite)
@@ -80,7 +82,7 @@ export default {
       this.users.splice(this.users.indexOf(user), 1)
     })
 
-    window.Echo.join(`invites.${this.user}`).listen('InviteSent', ({ invite }) => {
+    window.Echo.join(`invites.${this.userid}`).listen('InviteSent', ({ invite }) => {
       this.invites.push(invite)
     })
   }
@@ -112,5 +114,10 @@ h3 {
 
 .invites-list {
   padding-left: 10px;
+}
+
+.current-user {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 </style>

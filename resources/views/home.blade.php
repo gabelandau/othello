@@ -7,7 +7,7 @@
             <messages room="{{ $room }}"></messages>
             <message-field room="{{ $room }}"></message-field>
         </div>
-        <div class="column"><lobby room="{{ $room }}" user="{{ Auth::user()->id }}"></lobby></div>
+        <div class="column"><lobby room="{{ $room }}" userid="{{ Auth::user()->id }}"></lobby></div>
     </div>
 </div>
 @endsection
