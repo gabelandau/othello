@@ -23,6 +23,9 @@ Route::get('messages', 'MessageController@getPrevious');
 
 Route::get('invites', 'InviteController@getPrevious');
 Route::post('invites', 'InviteController@store');
+Route::post('invite/{id}/accept', 'InviteController@accept');
+
+Route::get('games', 'GameController@list');
 
 // Browser Routes
 Route::get('', 'HomeController@index')->name('home');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Invite;
+use App\Game;
 use App\Events\InviteSent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -51,5 +52,30 @@ class InviteController extends Controller
             ->get();
 
         return $messages;
+    }
+
+    public function accept(Request $request, int $id)
+    {
+        $user = $request->user();
+
+        $invite = DB::table('invites')
+            ->where('invites.id', '=', $id)
+            ->orderBy('invites.created_at', 'desc')
+            ->first();
+
+        if ($invite->player != $user->id) {
+            return response('Unauthorized to accept invitation', 403);
+        }
+
+        $game = Game::create([
+            'initiator' => $invite->initiator,
+            'player'    => $invite->player
+        ]);
+
+        if (!is_null($game)) {
+            DB::table('invites')->where('invites.id', '=', $invite->id)->delete();
+        }
+
+        return response(array('user' => $request->user()->id, 'game' => $game), 200);
     }
 }
