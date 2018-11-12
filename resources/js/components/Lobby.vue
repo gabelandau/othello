@@ -8,7 +8,7 @@
 
       <div class="user-list-text">
         <h3 class="title is-3">Welcome!</h3>
-        <p>Welcome to online Othello. Click a player below to challenge them to a game! Or, click any of your pending invites to accept it and start playing!</p>
+        <p>Welcome to online Othello. Click a player below to challenge them to a game, click any of your pending invites to accept it and start playing, or click any of your active games to return to the action!</p>
       </div>
       <div class="columns">
         <div class="column">
@@ -20,10 +20,20 @@
         <div class="column">
           <nav class="panel invites-list">
             <p class="panel-heading">Pending Invites</p>
-            <div v-for="invite in invites" class="panel-block" :key="invite.id">
+            <div v-for="invite in invites" class="panel-block" :key="invite.id" @click="inviteClicked(invite)">
               <div class="columns">
                 <div class="column">From: {{ invite.username }}</div>
                 <div class="column invite-datetime">{{ invite.created_at }}</div>
+              </div>
+            </div>
+          </nav>
+
+          <nav class="panel invites-list">
+            <p class="panel-heading">Active Games</p>
+            <div v-for="game in games" class="panel-block" :key="game.id" @click="gameClicked(game)">
+              <div class="columns">
+                <div class="column">{{ game.initiator }} challenged {{ game.player }}</div>
+                <div class="column invite-datetime">{{ game.created_at }}</div>
               </div>
             </div>
           </nav>
@@ -47,6 +57,24 @@
         </footer>
       </div>
     </div>
+
+    <div class="modal" v-bind:class="{ 'is-active': showInviteModal }">
+      <div class="modal-background" @click="showInviteModal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">You've been invited!</p>
+          <button class="delete" aria-label="close" @click="showInviteModal = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="modal-inline-header">You were invited to a game by: {{ selectedInvite.username }}. What would you like to do?</p>
+          <button class="button is-fullwidth is-link bottom-padding" @click="acceptInvite(selectedInvite.id)">Accept</button>
+          <button class="button is-fullwidth is-link" @click="declineInvite()">Decline</button>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,10 +86,16 @@ export default {
     return {
       users: [],
       invites: [],
+      games: [],
       selectedUser: {
         username: null
       },
+      selectedInvite: {
+        username: null,
+        id: null
+      },
       showUserModal: false,
+      showInviteModal: false,
       inviteResponse: {
         show: false,
         response: 0
@@ -74,6 +108,10 @@ export default {
         this.selectedUser = user
         this.showUserModal = true
       }
+    },
+    inviteClicked (invite) {
+      this.selectedInvite = invite
+      this.showInviteModal = true
     },
     sendInvite () {
       window.axios.post('/invites', {
@@ -90,9 +128,32 @@ export default {
           }, 3000)
         }
       })
+    },
+    acceptInvite (id) {
+      window.axios.post(`/invite/${id}/accept`).then((res) => {
+        this.getGames()
+      }).catch((err) => console.log(err))
+    },
+    declineInvite () {
+      //
+    },
+    getGames () {
+      window.axios.get('/games').then(response => {
+        this.games = []
+
+        response.data.forEach(game => {
+          game.created_at = `Started: ${window.moment(game.created_at).format('MM/DD/YY')}`
+          this.games.push(game)
+        })
+      })
+    },
+    gameClicked (game) {
+      //
     }
   },
   mounted () {
+    this.getGames()
+
     window.axios.get('/invites').then(response => {
       response.data.forEach(invite => {
         invite.created_at = window.moment(invite.created_at).format('MM/DD/YY @ h:mm:ssA')
@@ -163,5 +224,9 @@ h3 {
   z-index: 100;
   margin: 10px;
   width: 100%;
+}
+
+.bottom-padding {
+  margin-bottom: 10px;
 }
 </style>
