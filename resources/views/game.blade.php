@@ -4,10 +4,12 @@
 <div>
     <div class="columns">
         <div class="column sidebar is-one-quarter">
-            <messages game="{{ $game }}"></messages>
-            <message-field game="{{ $game }}"></message-field>
+            <messages game="{{ $game->id }}"></messages>
+            <message-field game="{{ $game->id }}"></message-field>
         </div>
-        <div class="column">hello!</div>
+        <div class="column">
+            <game-header game="{{ json_encode($game) }}"></game-header>
+        </div>
     </div>
 </div>
 @endsection

@@ -131,7 +131,7 @@ export default {
     },
     acceptInvite (id) {
       window.axios.post(`/invite/${id}/accept`).then((res) => {
-        this.getGames()
+        document.location.href = `game/${res.data.game.id}`
       }).catch((err) => console.log(err))
     },
     declineInvite () {
@@ -148,7 +148,7 @@ export default {
       })
     },
     gameClicked (game) {
-      //
+      document.location.href = `game/${game.id}`
     }
   },
   mounted () {
