@@ -80,7 +80,7 @@
 
 <script>
 export default {
-  props: ['room', 'userid'],
+  props: ['game', 'userid'],
   name: 'Lobby',
   data () {
     return {
@@ -161,7 +161,7 @@ export default {
       })
     })
 
-    window.Echo.join(`messages.${this.room}`).here(users => {
+    window.Echo.join(`messages.${this.game}`).here(users => {
       this.users = users
     }).joining(user => {
       this.users.push(user)

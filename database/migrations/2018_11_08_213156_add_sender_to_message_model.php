@@ -14,9 +14,9 @@ class AddSenderToMessageModel extends Migration
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->integer('room');
+            $table->integer('game');
             $table->integer('sender');
-            $table->foreign('room')->references('id')->on('rooms');
+            $table->foreign('game')->references('id')->on('games');
             $table->foreign('sender')->references('id')->on('users');
         });
     }

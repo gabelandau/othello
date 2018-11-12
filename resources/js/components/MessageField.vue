@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  props: ['room'],
+  props: ['game'],
   data () {
     return {
       message: ''
@@ -21,7 +21,7 @@ export default {
     sendMessage () {
       window.axios.post('/messages', {
         body: this.message,
-        room: this.room
+        game: this.game
       })
 
       this.message = ''

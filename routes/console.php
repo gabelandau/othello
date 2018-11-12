@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
-use App\Room;
+use App\Game;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +19,9 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('createLobby', function () {
-    Room::create([
+    Game::create([
         'initiator' => null,
-        'player'    => null
+        'player'    => null,
+        'board'     => null
     ]);
 });

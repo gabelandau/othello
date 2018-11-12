@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ['room'],
+  props: ['game'],
   data () {
     return {
       messages: []
@@ -31,7 +31,7 @@ export default {
       this.messages.reverse()
     })
 
-    window.Echo.join(`messages.${this.room}`).listen('MessageSent', ({ message }) => {
+    window.Echo.join(`messages.${this.game}`).listen('MessageSent', ({ message }) => {
       message.created_at = window.moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
       this.messages.push(message)
     })
