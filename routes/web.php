@@ -19,7 +19,7 @@ Route::get('test', function () {
 
 // Event Routes
 Route::post('messages', 'MessageController@store');
-Route::get('messages', 'MessageController@getPrevious');
+Route::get('messages/{game}', 'MessageController@getPrevious');
 
 Route::get('invites', 'InviteController@getPrevious');
 Route::post('invites', 'InviteController@store');

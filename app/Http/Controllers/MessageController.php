@@ -41,10 +41,11 @@ class MessageController extends Controller
         event(new MessageSent($message));
     }
 
-    public function getPrevious()
+    public function getPrevious(int $game)
     {
         $messages = DB::table('messages')
             ->orderBy('created_at', 'desc')
+            ->where('messages.game', '=', $game)
             ->join('users', 'users.id', '=', 'messages.sender')
             ->select('messages.body', 'messages.created_at', 'users.username')
             ->take(10)

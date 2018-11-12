@@ -41,6 +41,13 @@ class GameController extends Controller
             return redirect('/');
         }
 
-        return view('game', ['game' => $id]);
+        $game = DB::table('games')
+            ->where('games.id', '=', $id)
+            ->join('users as u1', 'u1.id', '=', 'games.initiator')
+            ->join('users as u2', 'u2.id', '=', 'games.player')
+            ->select('games.id', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
+            ->first();
+
+        return view('game', ['game' => $game]);
     }
 }

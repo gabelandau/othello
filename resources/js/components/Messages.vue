@@ -16,7 +16,7 @@ export default {
     }
   },
   created () {
-    window.axios.get('/messages').then(response => {
+    window.axios.get(`/messages/${this.game}`).then(response => {
       response.data.forEach(message => {
         message.created_at = window.moment(message.created_at).format('MM/DD/YY @ h:mm:ssA')
         this.messages.push(message)
@@ -25,7 +25,7 @@ export default {
       this.messages.push({
         'created_at': '',
         'username': 'System',
-        'body': 'You are now in the global chat, say hi!'
+        'body': `You are now in ${this.game == 1 ? 'the global' : 'a private game'} chat, say hi!` // eslint-disable-line
       })
 
       this.messages.reverse()
