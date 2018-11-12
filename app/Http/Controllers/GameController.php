@@ -48,6 +48,10 @@ class GameController extends Controller
             ->select('games.id', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
             ->first();
 
-        return view('game', ['game' => $game]);
+        if(!is_null($game)) {
+            return view('game', ['game' => $game]);
+        } else {
+            return redirect('/');
+        }
     }
 }

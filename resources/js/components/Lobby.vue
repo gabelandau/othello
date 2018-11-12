@@ -210,6 +210,8 @@ h3 {
 }
 
 .panel-block {
+  cursor: pointer;
+
   .columns {
     width: 100%;
   }
