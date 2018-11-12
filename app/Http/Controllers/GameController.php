@@ -34,4 +34,13 @@ class GameController extends Controller
 
         return $games;
     }
+
+    public function show(Request $request, int $id)
+    {
+        if ($id == 1) {
+            return redirect('/');
+        }
+
+        return view('game', ['game' => $id]);
+    }
 }
