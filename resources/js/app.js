@@ -1,4 +1,5 @@
 import './bootstrap'
+import gameStore from './store'
 
 window.Vue = require('vue')
 
@@ -11,5 +12,6 @@ window.Vue.component('piece', require('./components/game/Piece.vue'))
 window.Vue.component('cell-table', require('./components/game/CellTable.vue'))
 
 new window.Vue({ // eslint-disable-line no-new
-  el: '#app'
+  el: '#app',
+  store: gameStore
 })

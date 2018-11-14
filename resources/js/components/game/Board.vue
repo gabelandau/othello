@@ -2,15 +2,21 @@
   <div class="board">
     <svg width="604" height="604" style="stroke-width:2;stroke:rgb(0,0,0);">
       <cell-table></cell-table>
-      <piece x="5" y="5" color="white"/>
-      <piece x="6" y="6" color="black"/>
+      <piece v-for="piece in pieces" :key="piece.id" :x="piece.x" :y="piece.y" :color="piece.color"></piece>
     </svg>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'board'
+  name: 'board',
+  computed: {
+    ...mapGetters({
+      pieces: 'getPieces'
+    })
+  }
 }
 </script>
 
