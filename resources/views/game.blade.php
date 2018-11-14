@@ -9,6 +9,7 @@
         </div>
         <div class="column">
             <game-header game="{{ json_encode($game) }}"></game-header>
+            <board></board>
         </div>
     </div>
 </div>
