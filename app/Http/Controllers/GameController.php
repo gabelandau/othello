@@ -45,7 +45,7 @@ class GameController extends Controller
             ->where('games.id', '=', $id)
             ->join('users as u1', 'u1.id', '=', 'games.initiator')
             ->join('users as u2', 'u2.id', '=', 'games.player')
-            ->select('games.id', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
+            ->select('games.id', 'games.board', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
             ->first();
 
         if(!is_null($game)) {

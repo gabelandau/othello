@@ -7,28 +7,7 @@ const gameStore = new Vuex.Store({
   state: {
     currentId: null,
     opponentId: null,
-    pieces: [
-      {
-        x: 4,
-        y: 4,
-        color: 'white'
-      },
-      {
-        x: 5,
-        y: 4,
-        color: 'black'
-      },
-      {
-        x: 4,
-        y: 5,
-        color: 'black'
-      },
-      {
-        x: 5,
-        y: 5,
-        color: 'white'
-      }
-    ]
+    pieces: {}
   },
   getters: {
     getCurrentId: state => state.currentId,

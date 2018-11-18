@@ -67,9 +67,33 @@ class InviteController extends Controller
             return response('Unauthorized to accept invitation', 403);
         }
 
+        $board = array(
+            '44' => array(
+                'x' => 4,
+                'y' => 4,
+                'color' => 'white'
+            ),
+            '54' => array(
+                'x' => 5,
+                'y' => 4,
+                'color' => 'black'
+            ),
+            '45' => array(
+                'x' => 4,
+                'y' => 5,
+                'color' => 'black'
+            ),
+            '55' => array(
+                'x' => 5,
+                'y' => 5,
+                'color' => 'white'
+            )
+        );
+
         $game = Game::create([
             'initiator' => $invite->initiator,
-            'player'    => $invite->player
+            'player'    => $invite->player,
+            'board'     =>  json_encode($board)
         ]);
 
         if (!is_null($game)) {

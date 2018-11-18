@@ -12,10 +12,15 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'board',
+  props: ['game'],
   computed: {
     ...mapGetters({
       pieces: 'getPieces'
     })
+  },
+  mounted () {
+    let json = JSON.parse(this.game)
+    this.$store.commit('setBoard', { board: JSON.parse(json.board) })
   }
 }
 </script>
