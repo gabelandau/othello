@@ -35,7 +35,15 @@ const gameStore = new Vuex.Store({
     getPieces: state => state.pieces
   },
   mutations: {
-    setCurrentId (state, id) { state.currentId = id }
+    setCurrentId (state, id) { state.currentId = id },
+    setBoard (state, data) { state.pieces = data.board },
+    addPiece (state, data) {
+      Vue.set(state.pieces, `${data.x}${data.y}`, { x: data.x, y: data.y, color: data.color })
+
+      for (let x in data.changedPieces) {
+        Vue.set(state.pieces, x, { x: data.changedPieces[x].x, y: data.changedPieces[x].y, color: data.changedPieces[x].color })
+      }
+    }
   }
 })
 

@@ -75,11 +75,13 @@
 </template>
 
 <script>
+import { addPiece } from '../../functions/game'
+
 export default {
   name: 'cell-table',
   methods: {
     clicked (x, y) {
-      console.log(`x: ${x} y: ${y}`)
+      addPiece(x, y, 'black')
     }
   }
 }
