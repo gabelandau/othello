@@ -21,6 +21,9 @@ export default {
   mounted () {
     let json = JSON.parse(this.game)
     this.$store.commit('setBoard', { board: JSON.parse(json.board) })
+    window.Echo.join(`games.${json.id}`).listen('BoardUpdated', (data) => {
+      this.$store.commit('setBoard', { board: data.board })
+    })
   }
 }
 </script>

@@ -18,3 +18,7 @@ Broadcast::channel('messages.{room}', function ($user, $room) {
 Broadcast::channel('invites.{room}', function ($user, $room) {
     return $user;
 });
+
+Broadcast::channel('games.{room}', function ($user, $room) {
+    return $user;
+});
