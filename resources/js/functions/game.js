@@ -1,11 +1,12 @@
 import store from '../store'
+import axios from 'axios'
 
-let changedPieces = {}
-
-export const addPiece = (x, y, color) => {
-  changedPieces = {}
+export const addPiece = (x, y, color, game) => {
   let currentPieces = store.getters.getPieces
-  if (validatePiece(x, y, color, currentPieces)) store.commit('addPiece', { x, y, color, changedPieces })
+
+  if (validatePiece(x, y, color, currentPieces)) {
+    axios.post(`/game/${game}/addPiece`, { x, y, color }).then((res) => console.log(res)).catch((err) => console.log(err))
+  }
 }
 
 function validatePiece (x, y, color, pieces) {
@@ -24,7 +25,6 @@ function checker (x, y, color, pieces, direction, axis) {
   // Check adjacent it exists and is not the same color
   let test = pieces[`${cx + direction.x}${cy + direction.y}`]
   if (!test || test.color === color) return false
-  changedPieces[`${cx + direction.x}${cy + direction.y}`] = { x: cx + direction.x, y: cy + direction.y, color }
 
   // Check the rest of the pieces
   while (true) {
@@ -47,8 +47,6 @@ function checker (x, y, color, pieces, direction, axis) {
 
     // Sanity check, can't look for pieces with an x or y greater than 8
     if (cx > 8 || cx < 0 || cy > 8 || cy < 0) break
-
-    changedPieces[`${cx + direction.x}${cy + direction.y}`] = { x: cx + direction.x, y: cy + direction.y, color }
   }
 
   // If you get here, something is wrong so return false

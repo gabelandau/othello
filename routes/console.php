@@ -25,3 +25,32 @@ Artisan::command('createLobby', function () {
         'board'     => null
     ]);
 });
+
+Artisan::command('resetBoard {id}', function ($id) {
+    $board = array(
+        '44' => array(
+            'x' => 4,
+            'y' => 4,
+            'color' => 'white'
+        ),
+        '54' => array(
+            'x' => 5,
+            'y' => 4,
+            'color' => 'black'
+        ),
+        '45' => array(
+            'x' => 4,
+            'y' => 5,
+            'color' => 'black'
+        ),
+        '55' => array(
+            'x' => 5,
+            'y' => 5,
+            'color' => 'white'
+        )
+    );
+
+    DB::table('games')
+        ->where('games.id', '=', $id)
+        ->update(['board' => json_encode($board)]);
+});

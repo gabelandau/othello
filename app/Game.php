@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
-    protected $fillable = ['initiator', 'player', 'board'];
+    protected $fillable = ['initiator', 'player', 'board', 'current_turn'];
 
     public function initiator()
     {

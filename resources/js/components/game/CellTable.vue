@@ -81,7 +81,7 @@ export default {
   name: 'cell-table',
   methods: {
     clicked (x, y) {
-      addPiece(x, y, 'black')
+      addPiece(x, y, this.$store.getters.getColor, this.$store.getters.getGameId)
     }
   }
 }

@@ -18,9 +18,12 @@ export default {
       pieces: 'getPieces'
     })
   },
-  mounted () {
+  created () {
     let json = JSON.parse(this.game)
     this.$store.commit('setBoard', { board: JSON.parse(json.board) })
+    this.$store.commit('setGameId', json.id)
+    this.$store.commit('setColor', json.color)
+
     window.Echo.join(`games.${json.id}`).listen('BoardUpdated', (data) => {
       this.$store.commit('setBoard', { board: data.board })
     })

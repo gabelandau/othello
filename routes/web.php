@@ -27,6 +27,7 @@ Route::post('invite/{id}/accept', 'InviteController@accept');
 
 Route::get('games', 'GameController@list');
 Route::get('game/{id}', 'GameController@show');
+Route::post('game/{id}/addPiece', 'GameController@makeMove');
 
 // Browser Routes
 Route::get('', 'HomeController@index')->name('home');
