@@ -19,11 +19,15 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('createLobby', function () {
-    Game::create([
+    $game = Game::create([
         'initiator' => null,
         'player'    => null,
         'board'     => null
     ]);
+
+    DB::table('games')
+        ->where('id', '=', $game->id)
+        ->update(['id' => 1]);
 });
 
 Artisan::command('resetBoard {id}', function ($id) {
