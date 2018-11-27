@@ -16,14 +16,16 @@ class BoardUpdated implements ShouldBroadcast
 
     public $board;
     public $gameId;
+    public $turn;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($board, $gameId)
+    public function __construct($board, $turn, $gameId)
     {
         $this->board = $board;
+        $this->turn = $turn;
         $this->gameId = $gameId;
     }
 

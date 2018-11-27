@@ -20,12 +20,15 @@ export default {
   },
   created () {
     let json = JSON.parse(this.game)
+    this.$store.commit('setCurrentTurn', json.current_turn)
     this.$store.commit('setBoard', { board: JSON.parse(json.board) })
     this.$store.commit('setGameId', json.id)
     this.$store.commit('setColor', json.color)
 
     window.Echo.join(`games.${json.id}`).listen('BoardUpdated', (data) => {
+      console.log('data', data)
       this.$store.commit('setBoard', { board: data.board })
+      this.$store.commit('setCurrentTurn', data.turn.current_turn)
     })
   }
 }

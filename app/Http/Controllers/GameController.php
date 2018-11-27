@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Game;
+use App\Message;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Events\BoardUpdated;
+use App\Events\MessageSent;
 
 class GameController extends Controller
 {
@@ -49,7 +51,8 @@ class GameController extends Controller
             ->where('games.id', '=', $id)
             ->join('users as u1', 'u1.id', '=', 'games.initiator')
             ->join('users as u2', 'u2.id', '=', 'games.player')
-            ->select('games.id', 'games.board', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
+            ->join('users as u3', 'u3.id', '=', 'games.current_turn')
+            ->select('games.id', 'games.board', 'u1.username as initiator', 'u2.username as player', 'u3.username as current_turn', 'games.created_at')
             ->first();
 
         if(!is_null($game)) {
@@ -90,16 +93,34 @@ class GameController extends Controller
 
         $valid = $this->validatePiece($piece['x'], $piece['y'], $color, $board);
 
-        if ($valid) {
+        if ($valid && $game->current_turn == $user->id) {
             foreach ($this->changedPieces as $key => $value) {
                 $board[$key] = $value;
+            }
+
+            $newTurn;
+            if ($game->current_turn == $game->initiator) {
+                $newTurn = $game->player;
+            } else {
+                $newTurn = $game->initiator;
             }
 
             DB::table('games')
                 ->where('games.id', '=', $id)
                 ->update(['board' => json_encode($board)]);
 
-            event(new BoardUpdated($board, $game->id));
+            DB::table('games')
+                ->where('games.id', '=', $id)
+                ->update(['current_turn' => $newTurn]);
+
+            $turn = DB::table('games')
+                ->where('games.id', '=', $id)
+                ->join('users as u1', 'u1.id', '=', 'games.current_turn')
+                ->select('u1.username as current_turn')
+                ->first();
+
+
+            event(new BoardUpdated($board, $turn, $game->id));
             return json_encode($board);
         }
 

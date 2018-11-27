@@ -91,9 +91,10 @@ class InviteController extends Controller
         );
 
         $game = Game::create([
-            'initiator' => $invite->initiator,
-            'player'    => $invite->player,
-            'board'     =>  json_encode($board)
+            'initiator'     => $invite->initiator,
+            'player'        => $invite->player,
+            'board'         =>  json_encode($board),
+            'current_turn'  => $invite->initiator
         ]);
 
         if (!is_null($game)) {
