@@ -3,6 +3,8 @@
     <p class="title is-4">{{ gameJson.initiator }} vs. {{ gameJson.player }}</p>
     <p class="subtitle is-6">Game Started: {{ gameJson.created_at }}</p>
     <p class="subtitle is-6">Current Turn: {{ currentTurn }}</p>
+    <p class="subtitle is-6">Your Color: {{ gameJson.color.charAt(0).toUpperCase() + gameJson.color.slice(1) }}</p>
+    <h2 class="title is-2" v-show="win">Game over!</h2>
   </div>
 </template>
 
@@ -13,7 +15,8 @@ export default {
   props: ['game'],
   computed: {
     ...mapGetters({
-      currentTurn: 'getCurrentTurn'
+      currentTurn: 'getCurrentTurn',
+      win: 'getWin'
     }),
     gameJson () {
       let json = JSON.parse(this.game)
@@ -29,11 +32,16 @@ export default {
   padding-top: 10px;
 }
 
-p {
+p, h2 {
   text-align: center;
 }
 
 .subtitle {
   margin-bottom: 0px;
+}
+
+h2 {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 </style>

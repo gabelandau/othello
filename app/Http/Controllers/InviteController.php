@@ -9,6 +9,7 @@ use App\Events\InviteSent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Events\InviteAccepted;
 
 class InviteController extends Controller
 {
@@ -93,7 +94,7 @@ class InviteController extends Controller
         $game = Game::create([
             'initiator'     => $invite->initiator,
             'player'        => $invite->player,
-            'board'         =>  json_encode($board),
+            'board'         => json_encode($board),
             'current_turn'  => $invite->initiator
         ]);
 
@@ -101,6 +102,14 @@ class InviteController extends Controller
             DB::table('invites')->where('invites.id', '=', $invite->id)->delete();
         }
 
+        $acceptedGame = DB::table('games')
+        ->where('games.id', '=', $game->id)
+        ->join('users as u1', 'u1.id', '=', 'games.initiator')
+        ->join('users as u2', 'u2.id', '=', 'games.player')
+        ->select('games.id', 'u1.username as initiator', 'u2.username as player', 'games.created_at')
+        ->first();
+
+        event(new InviteAccepted($acceptedGame, $game->initiator));
         return response(array('user' => $request->user()->id, 'game' => $game), 200);
     }
 }

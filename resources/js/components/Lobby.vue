@@ -173,6 +173,12 @@ export default {
       invite.created_at = window.moment(invite.created_at).format('MM/DD/YY @ h:mm:ssA')
       this.invites.unshift(invite)
     })
+
+    window.Echo.join(`invite-accepted.${this.userid}`).listen('InviteAccepted', ({ game }) => {
+      console.log(game)
+      game.created_at = `Started: ${window.moment(game.created_at).format('MM/DD/YY')}`
+      this.games.push(game)
+    })
   }
 }
 </script>

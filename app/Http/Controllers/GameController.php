@@ -52,7 +52,7 @@ class GameController extends Controller
             ->join('users as u1', 'u1.id', '=', 'games.initiator')
             ->join('users as u2', 'u2.id', '=', 'games.player')
             ->join('users as u3', 'u3.id', '=', 'games.current_turn')
-            ->select('games.id', 'games.board', 'u1.username as initiator', 'u2.username as player', 'u3.username as current_turn', 'games.created_at')
+            ->select('games.id', 'games.board', 'games.ended', 'games.winner', 'u1.username as initiator', 'u2.username as player', 'u3.username as current_turn', 'games.created_at')
             ->first();
 
         if(!is_null($game)) {
@@ -119,12 +119,55 @@ class GameController extends Controller
                 ->select('u1.username as current_turn')
                 ->first();
 
+            if ($this->checkWin($board, $color)) {
+                DB::table('games')
+                    ->where('games.id', '=', $id)
+                    ->update(['winner' => $turn->current_turn, 'ended' => true]);
 
-            event(new BoardUpdated($board, $turn, $game->id));
-            return json_encode($board);
+                event(new BoardUpdated($board, $turn, $game->id, true));
+                return json_encode($board);
+            } else {
+                event(new BoardUpdated($board, $turn, $game->id, false));
+                return json_encode($board);
+            }
         }
 
         return json_encode(false);
+    }
+
+    function checkWin($pieces, $color)
+    {
+        $oppColor = ($color == 'white' ? 'black' : 'white');
+
+        $entireBoard = $this->checkEntireBoard($pieces);
+        $checkFreeMoves = $this->checkFreeMoves($pieces, $oppColor);
+
+        return $entireBoard || $checkFreeMoves;
+    }
+
+    function checkEntireBoard($pieces) {
+        foreach (range(1, 8) as $x)
+        {
+            foreach (range(1, 8) as $y)
+            {
+                if (!isset($pieces['' . $x . $y])) return false;
+            }
+        }
+
+        return true;
+    }
+
+    function checkFreeMoves($pieces, $color)
+    {
+        foreach (range(1, 8) as $x)
+        {
+            foreach (range(1, 8) as $y)
+            {
+                if ($this->validatePiece($x, $y, $color, $pieces)) return false;
+            }
+        }
+
+        return true;
     }
 
     function validatePiece($x, $y, $color, $pieces)

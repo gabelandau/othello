@@ -10,6 +10,7 @@ const gameStore = new Vuex.Store({
     gameId: null,
     color: null,
     currentTurn: null,
+    win: null,
     pieces: {}
   },
   getters: {
@@ -17,7 +18,8 @@ const gameStore = new Vuex.Store({
     getPieces: state => state.pieces,
     getGameId: state => state.gameId,
     getColor: state => state.color,
-    getCurrentTurn: state => state.currentTurn
+    getCurrentTurn: state => state.currentTurn,
+    getWin: state => state.win
   },
   mutations: {
     setCurrentId (state, id) { state.currentId = id },
@@ -25,6 +27,7 @@ const gameStore = new Vuex.Store({
     setGameId (state, id) { state.gameId = id },
     setColor (state, color) { state.color = color },
     setCurrentTurn (state, turn) { state.currentTurn = turn },
+    setWin (state, win) { state.win = win },
     addPiece (state, data) {
       Vue.set(state.pieces, `${data.x}${data.y}`, { x: data.x, y: data.y, color: data.color })
 
