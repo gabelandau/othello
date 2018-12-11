@@ -189,11 +189,14 @@ class GameController extends Controller
         $cx = $x;
         $cy = $y;
 
+        if (isset($pieces['' . $cx . $cy])) return false;
         if (!isset($pieces['' . $cx + $direction['x'] . $cy + $direction['y']])) return false;
 
         $test = $pieces['' . $cx + $direction['x'] . $cy + $direction['y']];
         if ($test['color'] == $color) return false;
         $initialPiece = array('x' => $cx + $direction['x'], 'y' => $cy + $direction['y'], 'color' => $color);
+
+        $good = true;
 
         while (true) {
             if ($axis == 'x') {
@@ -205,17 +208,48 @@ class GameController extends Controller
                 $cy += $direction['direction'];
             }
 
-            if (!isset($pieces['' . $cx + $direction['x'] . $cy + $direction['y']])) return false;
+            if (!isset($pieces['' . $cx + $direction['x'] . $cy + $direction['y']])) {
+                $good = false;
+                break;
+            }
             $test = $pieces['' . $cx + $direction['x'] . $cy + $direction['y']];
 
             if ($test['color'] == $color) {
-                $this->changedPieces['' . $initialPiece['x'] . $initialPiece['y']] = $initialPiece;
-                return true;
+                break;
             };
 
-            if ($cx > 8 || $cx < 0 || $cy > 8 || $cy < 0) break;
+            if ($cx > 8 || $cx < 0 || $cy > 8 || $cy < 0) {
+                $good = false;
+                break;
+            }
+        }
 
-            $this->changedPieces['' . $cx + $direction['x'] . $cy + $direction['y']] = array('x' => $cx + $direction['x'], 'y' => $cy + $direction['y'], 'color' => $color);
+        $cx = $x;
+        $cy = $y;
+
+        if ($good) {
+            while (true) {
+                if ($axis == 'x') {
+                    $cx += $direction['direction'];
+                } else if ($axis == 'y') {
+                    $cy += $direction['direction'];
+                } else if ($axis == 'both') {
+                    $cx += $direction['direction'];
+                    $cy += $direction['direction'];
+                }
+
+                if (!isset($pieces['' . $cx + $direction['x'] . $cy + $direction['y']])) return false;
+                $test = $pieces['' . $cx + $direction['x'] . $cy + $direction['y']];
+
+                if ($test['color'] == $color) {
+                    $this->changedPieces['' . $initialPiece['x'] . $initialPiece['y']] = $initialPiece;
+                    return true;
+                };
+
+                if ($cx > 8 || $cx < 0 || $cy > 8 || $cy < 0) break;
+
+                $this->changedPieces['' . $cx + $direction['x'] . $cy + $direction['y']] = array('x' => $cx + $direction['x'], 'y' => $cy + $direction['y'], 'color' => $color);
+            }
         }
 
         return false;
